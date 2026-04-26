@@ -1,38 +1,38 @@
 function handleQuery() {
     const input = getInput();
-    const response = generateResponse(input);
+    const response = processInput(input);
     showResponse(response);
 }
 
-// Get user input
+// Get input safely
 function getInput() {
-    return document.getElementById("userInput").value.toLowerCase();
+    return document.getElementById("userInput").value.toLowerCase().trim();
 }
 
-// Route logic
-function generateResponse(input) {
-    if (input.includes("vote")) return votingSteps();
-    if (input.includes("eligible")) return checkEligibility();
-    if (input.includes("date")) return electionDate();
+// Logic engine
+function processInput(input) {
 
-    return "Try asking: vote / eligible / date";
+    if (input.includes("vote")) {
+        return "Steps: Register → Verify ID → Go to booth → Cast vote";
+    }
+
+    if (input.includes("eligible")) {
+        let age = prompt("Enter your age:");
+        return age >= 18 ? "You are eligible to vote ✔️" : "Not eligible ❌";
+    }
+
+    if (input.includes("date")) {
+        return "Election Date: 10 May (Demo)";
+    }
+
+    if (input.includes("booth")) {
+        return "Open the Google Maps link below to find your booth.";
+    }
+
+    return "Try: vote / eligible / date / booth";
 }
 
 // Output
 function showResponse(response) {
     document.getElementById("response").innerText = response;
-}
-
-// Features
-function votingSteps() {
-    return "Steps: 1. Register 2. ID Check 3. Go to booth 4. Vote using EVM";
-}
-
-function checkEligibility() {
-    let age = prompt("Enter your age:");
-    return age >= 18 ? "✅ You are eligible to vote" : "❌ You are not eligible";
-}
-
-function electionDate() {
-    return "📅 Election Date: 10 May (Demo Data)";
 }

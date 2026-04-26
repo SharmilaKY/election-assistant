@@ -11,24 +11,22 @@
 
     <h1>🗳️ Election Assistant</h1>
 
-    <label for="userInput">Ask your question:</label>
-    <input type="text" id="userInput" placeholder="e.g. How to vote?" aria-label="Election assistant input">
+    <label for="userInput">Ask your question</label><br><br>
 
-    <button onclick="handleQuery()" aria-label="Submit question">
-        Ask
-    </button>
+    <input type="text" id="userInput" placeholder="vote / eligible / date / booth"
+        aria-label="Election assistant input">
+
+    <button onclick="handleQuery()">Ask</button>
 
     <p id="response" role="status"></p>
 
     <br>
 
-    <!-- Google Services Integration (Maps) -->
     <a href="https://www.google.com/maps/search/polling+booth+near+me" target="_blank">
-        📍 Find Polling Booth on Google Maps
+        📍 Find Your Polling Booth
     </a>
 
     <script src="script.js"></script>
-    <script src="test.js"></script>
 
 </body>
 
