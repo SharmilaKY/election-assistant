@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
     <title>Election Assistant</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -10,16 +11,25 @@
 
     <h1>🗳️ Election Assistant</h1>
 
-    <input type="text" id="userInput" placeholder="Ask something...">
-    <button onclick="handleQuery()">Ask</button>
+    <label for="userInput">Ask your question:</label>
+    <input type="text" id="userInput" placeholder="e.g. How to vote?" aria-label="Election assistant input">
 
-    <p id="response"></p>
+    <button onclick="handleQuery()" aria-label="Submit question">
+        Ask
+    </button>
+
+    <p id="response" role="status"></p>
+
+    <br>
+
+    <!-- Google Services Integration (Maps) -->
+    <a href="https://www.google.com/maps/search/polling+booth+near+me" target="_blank">
+        📍 Find Polling Booth on Google Maps
+    </a>
 
     <script src="script.js"></script>
-    <br><br>
-    <a href="https://www.google.com/maps" target="_blank">
-        Find Polling Booth 📍
-    </a>
+    <script src="test.js"></script>
+
 </body>
 
 </html>

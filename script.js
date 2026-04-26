@@ -1,24 +1,38 @@
 function handleQuery() {
-    let input = document.getElementById("userInput").value.toLowerCase();
-    let response = "";
+    const input = getInput();
+    const response = generateResponse(input);
+    showResponse(response);
+}
 
-    if (input.includes("vote")) {
-        response = "Steps to vote: 1. Register 2. Verify ID 3. Visit polling booth 4. Cast vote";
-    }
-    else if (input.includes("eligible")) {
-        let age = prompt("Enter your age:");
-        if (age >= 18) {
-            response = "✅ You are eligible to vote!";
-        } else {
-            response = "❌ You are not eligible to vote.";
-        }
-    }
-    else if (input.includes("date")) {
-        response = "📅 Election Date: May 10 (Example)";
-    }
-    else {
-        response = "Try asking about voting, eligibility, or election date.";
-    }
+// Get user input
+function getInput() {
+    return document.getElementById("userInput").value.toLowerCase();
+}
 
+// Route logic
+function generateResponse(input) {
+    if (input.includes("vote")) return votingSteps();
+    if (input.includes("eligible")) return checkEligibility();
+    if (input.includes("date")) return electionDate();
+
+    return "Try asking: vote / eligible / date";
+}
+
+// Output
+function showResponse(response) {
     document.getElementById("response").innerText = response;
+}
+
+// Features
+function votingSteps() {
+    return "Steps: 1. Register 2. ID Check 3. Go to booth 4. Vote using EVM";
+}
+
+function checkEligibility() {
+    let age = prompt("Enter your age:");
+    return age >= 18 ? "✅ You are eligible to vote" : "❌ You are not eligible";
+}
+
+function electionDate() {
+    return "📅 Election Date: 10 May (Demo Data)";
 }
