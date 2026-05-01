@@ -1,120 +1,114 @@
-// 🔥 Firebase Config (REPLACE THIS)
+// 🔥 Firebase Config
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
+    apiKey: "YOUR_KEY",
     authDomain: "YOUR_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
+    projectId: "YOUR_PROJECT"
 };
 
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// 🌐 Language Content
-const content = {
+// 🧠 Context
+let context = {
+    age: null,
+    step: "start"
+};
+
+// 🌐 Language
+const langData = {
     en: {
-        vote: "Steps: Register → Verify ID → Visit booth → Cast vote",
-        eligible: (age) => age >= 18 ? "Eligible ✔️" : "Not eligible ❌",
-        date: "Election Date: 10 May (Demo)",
-        booth: "Showing nearby polling booths...",
-        invalid: "Enter a valid age.",
-        unknown: "Try: vote / eligible / date / booth",
-        suggest: "Next: Find your polling booth?"
+        welcome: "Welcome! Type 'start' to begin.",
+        askAge: "What is your age?",
+        eligible: "You are eligible ✔️. Next: Find booth?",
+        notEligible: "You are not eligible ❌",
+        booth: "Showing nearby polling booths..."
     },
     ta: {
-        vote: "படிகள்: பதிவு → அடையாளம் → வாக்களி",
-        eligible: (age) => age >= 18 ? "தகுதி உள்ளது ✔️" : "தகுதி இல்லை ❌",
-        date: "தேர்தல் தேதி: மே 10",
-        booth: "அருகிலுள்ள வாக்குச்சாவடிகள்...",
-        invalid: "சரியான வயது உள்ளிடவும்",
-        unknown: "முயற்சி: vote / eligible / date / booth",
-        suggest: "அடுத்து: வாக்குச்சாவடி பார்க்கவா?"
+        welcome: "வரவேற்கிறோம்! 'start' என টাইப் செய்யவும்",
+        askAge: "உங்கள் வயது என்ன?",
+        eligible: "நீங்கள் தகுதி உள்ளவர் ✔️",
+        notEligible: "தகுதி இல்லை ❌",
+        booth: "அருகிலுள்ள வாக்குச்சாவடி..."
     }
 };
 
-// Main
+// 🧠 Main Handler
 async function handleQuery() {
-    const lang = getLang();
     const input = getInput();
-    const intent = detectIntent(input);
+    const lang = getLang();
 
-    let response = "";
+    addMessage(input, "user");
 
-    if (intent === "eligibility") {
-        let age = prompt("Enter age:");
-        response = checkEligibility(age, lang);
-    } else {
-        response = generateResponse(intent, lang);
+    let response = process(input, lang);
+
+    addMessage(response, "bot");
+
+    await db.collection("queries").add({
+        text: input,
+        time: new Date()
+    });
+
+    document.getElementById("userInput").value = "";
+}
+
+// 🧠 Logic Engine
+function process(input, lang) {
+
+    if (input === "start") {
+        context.step = "age";
+        return langData[lang].askAge;
     }
 
-    showResponse(response);
-    showSuggestion(lang);
+    if (context.step === "age") {
+        let age = parseInt(input);
+        context.age = age;
 
-    await saveQuery(input, intent);
+        if (age >= 18) {
+            context.step = "booth";
+            return langData[lang].eligible;
+        } else {
+            return langData[lang].notEligible;
+        }
+    }
 
-    if (intent === "booth") loadMap();
-    loadHistory();
+    if (input.includes("booth")) {
+        loadMap();
+        return langData[lang].booth;
+    }
+
+    return "Type 'start' to begin.";
 }
 
-// Helpers
-function getLang() {
-    return document.getElementById("language").value;
-}
-
-function getInput() {
-    return document.getElementById("userInput").value.toLowerCase();
-}
-
-function detectIntent(input) {
-    if (input.includes("vote")) return "vote";
-    if (input.includes("eligible") || input.includes("age")) return "eligibility";
-    if (input.includes("date")) return "date";
-    if (input.includes("booth")) return "booth";
-    return "unknown";
-}
-
-function generateResponse(intent, lang) {
-    return content[lang][intent] || content[lang].unknown;
-}
-
-function checkEligibility(age, lang) {
-    if (!age || isNaN(age)) return content[lang].invalid;
-    return content[lang].eligible(age);
-}
-
-// UI Updates
-function showResponse(res) {
-    document.getElementById("response").innerText = res;
-}
-
-function showSuggestion(lang) {
-    document.getElementById("suggestion").innerText = content[lang].suggest;
+// 🧩 UI
+function addMessage(text, type) {
+    const div = document.createElement("div");
+    div.className = type;
+    div.innerText = text;
+    document.getElementById("chatBox").appendChild(div);
 }
 
 // 🌍 Map
 function loadMap() {
-    document.getElementById("mapContainer").innerHTML = `
-        <iframe width="100%" height="300"
-        src="https://www.google.com/maps?q=polling+booth+near+me&output=embed"></iframe>
-    `;
+    document.getElementById("map").innerHTML =
+        `<iframe width="100%" height="300"
+        src="https://www.google.com/maps?q=polling+booth+near+me&output=embed"></iframe>`;
 }
 
-// 🔥 Firebase
-async function saveQuery(query, intent) {
-    await db.collection("queries").add({
-        query, intent, time: new Date()
-    });
+// 🎤 Voice
+function startVoice() {
+    const recognition = new webkitSpeechRecognition();
+    recognition.onresult = function (event) {
+        document.getElementById("userInput").value =
+            event.results[0][0].transcript;
+    };
+    recognition.start();
 }
 
-// History
-async function loadHistory() {
-    const snapshot = await db.collection("queries")
-        .orderBy("time", "desc")
-        .limit(3)
-        .get();
+// Helpers
+function getInput() {
+    return document.getElementById("userInput").value.toLowerCase();
+}
 
-    let html = "<h3>Recent</h3>";
-    snapshot.forEach(doc => {
-        html += `<p>${doc.data().query}</p>`;
-    });
-
-    document.getElementById("history").innerHTML = html;
+function getLang() {
+    return document.getElementById("language").value;
 }

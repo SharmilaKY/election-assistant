@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Smart Election Assistant</title>
+    <title>AI Election Assistant</title>
     <link rel="stylesheet" href="style.css">
 
     <!-- Firebase -->
@@ -13,27 +13,22 @@
 
 <body>
 
-    <h1>🗳️ Smart Election Assistant</h1>
+    <h1>🗳️ AI Election Assistant</h1>
 
-    <!-- Language Toggle -->
     <select id="language">
         <option value="en">English</option>
         <option value="ta">தமிழ்</option>
     </select>
 
-    <div class="card">
-        <input type="text" id="userInput" placeholder="Ask about voting..." />
-        <button onclick="handleQuery()">Ask</button>
+    <div id="chatBox"></div>
+
+    <div class="input-area">
+        <input id="userInput" placeholder="Type or speak..." />
+        <button onclick="handleQuery()">Send</button>
+        <button onclick="startVoice()">🎤</button>
     </div>
 
-    <div class="card">
-        <p id="response"></p>
-        <p id="suggestion"></p>
-    </div>
-
-    <div class="card" id="mapContainer"></div>
-
-    <div class="card" id="history"></div>
+    <div id="map"></div>
 
     <script src="script.js"></script>
     <script src="test.js"></script>
