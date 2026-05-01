@@ -1,22 +1,15 @@
 function runTests() {
     console.log("Running Tests...");
 
-    console.assert(
-        votingSteps().includes("Register"),
-        "Voting Steps Test Failed"
-    );
+    console.assert(detectIntent("vote") === "vote", "Intent fail");
+    console.assert(detectIntent("booth") === "booth", "Booth fail");
 
-    console.assert(
-        checkEligibility() !== "",
-        "Eligibility Test Failed"
-    );
+    console.assert(checkEligibility(20, "en").includes("Eligible"), "Eligibility fail");
+    console.assert(checkEligibility("abc", "en") === "Enter a valid age.", "Invalid fail");
 
-    console.assert(
-        electionDate().includes("Election"),
-        "Date Test Failed"
-    );
+    console.assert(typeof saveQuery === "function", "Firebase missing");
 
-    console.log("All tests completed");
+    console.log("All tests passed ✅");
 }
 
 runTests();

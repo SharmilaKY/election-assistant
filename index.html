@@ -3,30 +3,40 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Election Assistant</title>
+    <title>Smart Election Assistant</title>
     <link rel="stylesheet" href="style.css">
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
 </head>
 
 <body>
 
-    <h1>🗳️ Election Assistant</h1>
+    <h1>🗳️ Smart Election Assistant</h1>
 
-    <label for="userInput">Ask your question</label><br><br>
+    <!-- Language Toggle -->
+    <select id="language">
+        <option value="en">English</option>
+        <option value="ta">தமிழ்</option>
+    </select>
 
-    <input type="text" id="userInput" placeholder="vote / eligible / date / booth"
-        aria-label="Election assistant input">
+    <div class="card">
+        <input type="text" id="userInput" placeholder="Ask about voting..." />
+        <button onclick="handleQuery()">Ask</button>
+    </div>
 
-    <button onclick="handleQuery()">Ask</button>
+    <div class="card">
+        <p id="response"></p>
+        <p id="suggestion"></p>
+    </div>
 
-    <p id="response" role="status"></p>
+    <div class="card" id="mapContainer"></div>
 
-    <br>
-
-    <a href="https://www.google.com/maps/search/polling+booth+near+me" target="_blank">
-        📍 Find Your Polling Booth
-    </a>
+    <div class="card" id="history"></div>
 
     <script src="script.js"></script>
+    <script src="test.js"></script>
 
 </body>
 

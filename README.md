@@ -1,16 +1,33 @@
-# 🗳️ Election Assistant
+# Smart Election Assistant
 
-## Overview
-This project helps users understand the election process.
+## 🚀 Overview
+A multilingual AI-powered assistant that helps users navigate election processes including eligibility, voting steps, and polling booth discovery.
 
-## Features
-- Voting steps
-- Eligibility checker
-- Election dates
-- Polling booth link (Google Maps)
+## 🌍 Features
+- English + Tamil support
+- Smart intent detection
+- Personalized suggestions
+- Google Maps integration
+- Firebase query tracking
 
-## Tech Used
-HTML, CSS, JavaScript
+## 🧠 Smart Capabilities
+- Context-aware responses
+- Suggests next actions
+- Stores and retrieves user history
 
-## How it Works
-User enters a query → assistant responds based on logic.
+## 🔗 Google Services
+- Firebase Firestore → stores queries
+- Google Maps → booth location
+
+## 🧪 Testing
+- Intent detection validation
+- Eligibility logic tests
+- Firebase integration checks
+
+## ⚙️ Setup
+- Add Firebase config in script.js
+- Open index.html
+
+## 📌 Assumptions
+- Demo election date used
+- Internet required
